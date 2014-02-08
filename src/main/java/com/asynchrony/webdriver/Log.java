@@ -1,43 +1,34 @@
 package com.asynchrony.webdriver;
 
 import java.io.*;
-import java.util.Properties;
 
-class Log {
+public class Log {
     private static final StringBuilder output = new StringBuilder();
     private static String logFilePath = "";
     private static String logFileName = "";
 
-    Log()
-    {
-        Properties logProperties = new Properties();
-        InputStream input;
-
-        try
-        {
-            input = new FileInputStream("config.properties");
-            logProperties.load(input);
-            logFilePath = logProperties.getProperty("logfilepath", "C:\\Logs");
-            logFileName = logProperties.getProperty("logfilename", "log.txt");
-        }
-        catch (IOException ex)
-        {
-            System.out.println(ex.getMessage());
-            System.out.println(ex.toString());
-        }
+    public static void setLogFilePath(String path) {
+        logFilePath = path;
     }
 
-    public static void Info(String log) {
+    public static void setLogFileName(String name) {
+        logFileName = name;
+    }
+
+    public static void info(String log) {
         output.append(log).append(System.getProperty("line.separator"));
+        System.out.println(log);
     }
 
-    public static void WriteFinalLog() {
+    public static void writeFinalLog() {
         String path = logFilePath + System.getProperty("file.separator") + logFileName;
-        //System.out.println("Path is: " + path);
 
         try {
-            PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(path, true)));
+            File logFile = new File(path);
+            FileWriter fw = new FileWriter(logFile, logFile.exists());
+            PrintWriter out = new PrintWriter(fw);
             out.println(output);
+            out.flush();
             out.close();
         } catch (IOException e) {
             System.out.println("\nIOException, log file not written");
