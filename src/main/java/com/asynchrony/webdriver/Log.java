@@ -1,11 +1,15 @@
 package com.asynchrony.webdriver;
 
 import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Log {
     private static final StringBuilder output = new StringBuilder();
     private static String logFilePath = "";
     private static String logFileName = "";
+    private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 
     public static void setLogFilePath(String path) {
         logFilePath = path;
@@ -16,7 +20,10 @@ public class Log {
     }
 
     public static void info(String log) {
-        output.append(log).append(System.getProperty("line.separator"));
+        output.append(timeFormat.format(new Date()))
+                .append(" : ")
+                .append(log)
+                .append(System.getProperty("line.separator"));
         System.out.println(log);
     }
 
