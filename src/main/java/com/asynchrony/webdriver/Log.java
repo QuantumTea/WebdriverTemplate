@@ -21,7 +21,7 @@ public class Log {
 
     public static void info(String log) {
         output.append(timeFormat.format(new Date()))
-                .append(" : INFO")
+                .append(" : INFO ")
                 .append(log)
                 .append(System.getProperty("line.separator"));
         System.out.println(log);
@@ -29,7 +29,7 @@ public class Log {
 
     public static void error(String log) {
         output.append(timeFormat.format(new Date()))
-                .append(" : ERROR")
+                .append(" : ERROR ")
                 .append(log)
                 .append(System.getProperty("line.separator"));
         System.out.println(log);
