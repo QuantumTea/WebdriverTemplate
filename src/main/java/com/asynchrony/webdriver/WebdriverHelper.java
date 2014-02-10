@@ -8,7 +8,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import static org.junit.Assert.assertTrue;
 
@@ -41,15 +41,7 @@ public class WebdriverHelper {
 
     public String randomString(int stringLength)
     {
-        String randomCharacters = "abcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder sb = new StringBuilder();
-
-        do
-        {
-            // add random character from string
-        } while (sb.length() < stringLength);
-
-        return sb.toString();
+        return RandomStringUtils.random(stringLength);
     }
 
     public void clickWait(WebElement element)
