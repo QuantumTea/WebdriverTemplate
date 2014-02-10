@@ -1,10 +1,10 @@
 package com.asynchrony.webdriver;
 
 import com.asynchrony.webdriver.rules.DriverSource;
+import com.google.common.base.Function;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,5 +65,40 @@ public class WebdriverHelper {
     public String getElementValue(WebElement element)
     {
         return element.getAttribute("value");
+    }
+
+    public String getElementCssClass(WebElement element)
+    {
+        return element.getAttribute("class");
+    }
+
+    public WebElement getWebelementSingleBy(DriverSource driverSource, By selector)
+    {
+        // add config for the wait timeout, reference it here
+        int timeoutOnWait = 3000;
+        try
+        {
+            return waitUntilFound(driverSource, selector, timeoutOnWait);
+        }
+        catch (WebDriverException ex)
+        {
+            Log.error("Timeout on single: " + selector);
+        }
+        return null;
+    }
+
+    private static Function<WebDriver, WebElement> presenceOfElementLocated(final By locator) {
+        return new Function<WebDriver, WebElement>() {
+            @Override
+            public WebElement apply(WebDriver driver) {
+                return driver.findElement(locator);
+            }
+        };
+    }
+
+    public WebElement waitUntilFound(DriverSource driverSource, By selector, int timeout)
+    {
+        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), timeout);
+        return waiter.until(presenceOfElementLocated(selector));
     }
 }
