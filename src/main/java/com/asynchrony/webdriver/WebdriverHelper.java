@@ -8,6 +8,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
+
 import org.apache.commons.lang3.RandomStringUtils;
 
 import static org.junit.Assert.assertTrue;
@@ -64,13 +66,29 @@ public class WebdriverHelper {
         return element.getAttribute("class");
     }
 
-    public WebElement getWebelementSingleBy(DriverSource driverSource, By selector)
+    public WebElement getWebElementSingleBy(DriverSource driverSource, By selector)
     {
         // add config for the wait timeout, reference it here
         int timeoutOnWait = 3000;
         try
         {
             return waitUntilFound(driverSource, selector, timeoutOnWait);
+        }
+        catch (WebDriverException ex)
+        {
+            Log.error("Timeout on single: " + selector);
+        }
+        return null;
+    }
+
+    public List<WebElement> getWebElementListBy(DriverSource driverSource, By selector)
+    {
+        // add config for the wait timeout, reference it here
+        int timeoutOnWait = 3000;
+
+        try
+        {
+            return waitUntilListFound(driverSource, selector, timeoutOnWait);
         }
         catch (WebDriverException ex)
         {
@@ -88,9 +106,24 @@ public class WebdriverHelper {
         };
     }
 
+    private static Function<WebDriver, WebElement> presenceOfElementListLocated(final By locator) {
+        return new Function<WebDriver, WebElement>() {
+            @Override
+            public List<> apply(WebDriver driver) {
+                return driver.findElements(locator);
+            }
+        };
+    }
+
     public WebElement waitUntilFound(DriverSource driverSource, By selector, int timeout)
     {
         WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), timeout);
         return waiter.until(presenceOfElementLocated(selector));
+    }
+
+    public List<WebElement> waitUntilListFound(DriverSource driverSource, By selector, int timeout)
+    {
+        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), timeout);
+        return waiter.until(presenceOfElementListLocated(selector));
     }
 }
