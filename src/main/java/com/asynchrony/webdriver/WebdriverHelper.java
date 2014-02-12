@@ -1,8 +1,8 @@
 package com.asynchrony.webdriver;
 
 import com.asynchrony.webdriver.rules.DriverSource;
-import com.google.common.base.Function;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
@@ -10,9 +10,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.apache.commons.lang3.RandomStringUtils;
-
 import static org.junit.Assert.assertTrue;
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
+import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
 public class WebdriverHelper {
     private DriverSource driverSource;
@@ -29,8 +29,7 @@ public class WebdriverHelper {
         assertTrue(driverSource.getDriver().getTitle().contains(value));
     }
 
-    public void takeScreenshot(DriverSource driverSource, String path)
-    {
+    public void takeScreenshot(DriverSource driverSource, String path) {
         path = path + System.getProperty("file.separator") + "screenshot.png";
         try {
             File screenshot = ((TakesScreenshot) driverSource.getDriver()).getScreenshotAs(OutputType.FILE);
@@ -41,13 +40,11 @@ public class WebdriverHelper {
         }
     }
 
-    public String randomString(int stringLength)
-    {
+    public String randomString(int stringLength) {
         return RandomStringUtils.random(stringLength);
     }
 
-    public void clickWait(WebElement element)
-    {
+    public void clickWait(WebElement element) {
         element.click();
         try {
             Thread.sleep(1000);
@@ -56,74 +53,46 @@ public class WebdriverHelper {
         }
     }
 
-    public String getElementValue(WebElement element)
-    {
+    public String getElementValue(WebElement element) {
         return element.getAttribute("value");
     }
 
-    public String getElementCssClass(WebElement element)
-    {
+    public String getElementCssClass(WebElement element) {
         return element.getAttribute("class");
     }
 
-    public WebElement getWebElementSingleBy(DriverSource driverSource, By selector)
-    {
+    public WebElement getWebElementSingleBy(DriverSource driverSource, By selector) {
         // add config for the wait timeout, reference it here
         int timeoutOnWait = 3000;
-        try
-        {
+        try {
             return waitUntilFound(driverSource, selector, timeoutOnWait);
-        }
-        catch (WebDriverException ex)
-        {
+        } catch (WebDriverException ex) {
             Log.error("Timeout on single: " + selector);
         }
         return null;
     }
 
-    public List<WebElement> getWebElementListBy(DriverSource driverSource, By selector)
-    {
+    public List<WebElement> getWebElementListBy(DriverSource driverSource, By selector) {
         // add config for the wait timeout, reference it here
         int timeoutOnWait = 3000;
 
-        try
-        {
+        try {
             return waitUntilListFound(driverSource, selector, timeoutOnWait);
-        }
-        catch (WebDriverException ex)
-        {
+        } catch (WebDriverException ex) {
             Log.error("Timeout on single: " + selector);
         }
         return null;
     }
 
-    private static Function<WebDriver, WebElement> presenceOfElementLocated(final By locator) {
-        return new Function<WebDriver, WebElement>() {
-            @Override
-            public WebElement apply(WebDriver driver) {
-                return driver.findElement(locator);
-            }
-        };
-    }
-
-    private static Function<WebDriver, WebElement> presenceOfElementListLocated(final By locator) {
-        return new Function<WebDriver, WebElement>() {
-            @Override
-            public List<> apply(WebDriver driver) {
-                return driver.findElements(locator);
-            }
-        };
-    }
-
-    public WebElement waitUntilFound(DriverSource driverSource, By selector, int timeout)
-    {
+    public WebElement waitUntilFound(DriverSource driverSource, By locator, int timeout) {
         WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), timeout);
-        return waiter.until(presenceOfElementLocated(selector));
+        waiter.ignoring(NoSuchElementException.class);
+        return waiter.until(presenceOfElementLocated(locator));
     }
 
-    public List<WebElement> waitUntilListFound(DriverSource driverSource, By selector, int timeout)
-    {
+    public List<WebElement> waitUntilListFound(DriverSource driverSource, By locator, int timeout) {
         WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), timeout);
-        return waiter.until(presenceOfElementListLocated(selector));
+        waiter.ignoring(NoSuchElementException.class);
+        return waiter.until(presenceOfAllElementsLocatedBy(locator));
     }
 }
