@@ -1,25 +1,32 @@
 package com.asynchrony.webdriver;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Log {
+public class Log
+{
     private static final StringBuilder output = new StringBuilder();
     private static String logFilePath = "";
     private static String logFileName = "";
     private static final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss:SSSS");
 
-    public static void setLogFilePath(String path) {
+    public static void setLogFilePath(String path)
+    {
         logFilePath = path;
     }
 
-    public static void setLogFileName(String name) {
+    public static void setLogFileName(String name)
+    {
         logFileName = name;
     }
 
-    public static void info(String log) {
+    public static void info(String log)
+    {
         output.append(timeFormat.format(new Date()))
                 .append(" : INFO ")
                 .append(log)
@@ -27,7 +34,8 @@ public class Log {
         System.out.println(log);
     }
 
-    public static void error(String log) {
+    public static void error(String log)
+    {
         output.append(timeFormat.format(new Date()))
                 .append(" : ERROR ")
                 .append(log)
@@ -35,7 +43,8 @@ public class Log {
         System.out.println(log);
     }
 
-    public static void writeFinalLog() {
+    public static void writeFinalLog()
+    {
         String path = logFilePath + System.getProperty("file.separator") + logFileName;
 
         try {

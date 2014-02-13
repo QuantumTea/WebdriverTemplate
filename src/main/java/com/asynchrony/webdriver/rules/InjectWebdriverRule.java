@@ -12,14 +12,18 @@ import org.openqa.selenium.support.events.EventFiringWebDriver;
 
 import java.lang.reflect.Field;
 
-public class InjectWebdriverRule implements MethodRule, DriverSource {
+public class InjectWebdriverRule implements MethodRule, DriverSource
+{
     private WebDriver driver;
 
     @Override
-    public Statement apply(final Statement base, final FrameworkMethod method, final Object target) {
-        return new Statement() {
+    public Statement apply(final Statement base, final FrameworkMethod method, final Object target)
+    {
+        return new Statement()
+        {
             @Override
-            public void evaluate() throws Throwable {
+            public void evaluate() throws Throwable
+            {
                 try {
                     injectWebdriver(method, target);
                     base.evaluate();
@@ -30,41 +34,49 @@ public class InjectWebdriverRule implements MethodRule, DriverSource {
         };
     }
 
-    public WebDriver getDriver() {
+    public WebDriver getDriver()
+    {
         return driver;
     }
 
-    private void shutdownDriver() {
+    private void shutdownDriver()
+    {
         if (driver != null) {
             driver.quit();
             driver = null;
         }
     }
 
-    private void injectWebdriver(FrameworkMethod method, Object target) {
+    private void injectWebdriver(FrameworkMethod method, Object target)
+    {
         Class<?> klass = target.getClass();
         Class<? extends WebDriver> driverClass = getDriver(klass, method);
 
         try {
-            driver = new EventFiringWebDriver(driverClass.newInstance()).register(new AbstractWebDriverEventListener() {
+            driver = new EventFiringWebDriver(driverClass.newInstance()).register(new AbstractWebDriverEventListener()
+            {
                 @Override
-                public void afterNavigateTo(String url, WebDriver driver) {
-                    Log.info("afterNavigateTo: "+url);
+                public void afterNavigateTo(String url, WebDriver driver)
+                {
+                    Log.info("afterNavigateTo: " + url);
                 }
 
                 @Override
-                public void afterClickOn(WebElement element, WebDriver driver) {
-                    Log.info("afterClickOn: text="+element.getText()+", tag="+element.getTagName());
+                public void afterClickOn(WebElement element, WebDriver driver)
+                {
+                    Log.info("afterClickOn: text=" + element.getText() + ", tag=" + element.getTagName());
                 }
 
                 @Override
-                public void onException(Throwable throwable, WebDriver driver) {
-                    Log.info("onException: "+throwable.getClass().getSimpleName()+" - "+throwable.getMessage());
+                public void onException(Throwable throwable, WebDriver driver)
+                {
+                    Log.info("onException: " + throwable.getClass().getSimpleName() + " - " + throwable.getMessage());
                 }
 
                 @Override
-                public void afterChangeValueOf(WebElement element, WebDriver driver) {
-                    Log.info("afterChangeValueOf: text="+element.getText()+", tag="+element.getTagName());
+                public void afterChangeValueOf(WebElement element, WebDriver driver)
+                {
+                    Log.info("afterChangeValueOf: text=" + element.getText() + ", tag=" + element.getTagName());
                 }
             });
 
@@ -80,7 +92,8 @@ public class InjectWebdriverRule implements MethodRule, DriverSource {
         }
     }
 
-    private Class<? extends WebDriver> getDriver(Class<?> klass, FrameworkMethod method) {
+    private Class<? extends WebDriver> getDriver(Class<?> klass, FrameworkMethod method)
+    {
         return new AnnotationValueExtractor<Driver, Class<? extends WebDriver>>(Driver.class).value(klass, method);
     }
 }

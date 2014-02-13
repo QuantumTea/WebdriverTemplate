@@ -5,12 +5,16 @@ import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
 
-public class TimerRule implements MethodRule {
+public class TimerRule implements MethodRule
+{
     @Override
-    public Statement apply(final Statement base, final FrameworkMethod method, Object target) {
-        return new Statement() {
+    public Statement apply(final Statement base, final FrameworkMethod method, Object target)
+    {
+        return new Statement()
+        {
             @Override
-            public void evaluate() throws Throwable {
+            public void evaluate() throws Throwable
+            {
                 long startTime = System.currentTimeMillis();
                 try {
                     base.evaluate();

@@ -4,15 +4,18 @@ import org.junit.runners.model.FrameworkMethod;
 
 import java.lang.annotation.Annotation;
 
-public class AnnotationValueExtractor<A extends Annotation, V> {
+public class AnnotationValueExtractor<A extends Annotation, V>
+{
     private final Class<A> annotationClass;
 
-    public AnnotationValueExtractor(Class<A> annotationClass) {
+    public AnnotationValueExtractor(Class<A> annotationClass)
+    {
         this.annotationClass = annotationClass;
     }
 
     @SuppressWarnings("unchecked")
-    public V value(Class<?> klass, FrameworkMethod method) {
+    public V value(Class<?> klass, FrameworkMethod method)
+    {
         A klassAnnotation = klass.getAnnotation(annotationClass);
         A methodAnnotation = method.getAnnotation(annotationClass);
         if (klassAnnotation == null && methodAnnotation == null) {

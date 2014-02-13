@@ -18,7 +18,8 @@ import static org.junit.Assert.assertTrue;
 @RunWith(WebdriverTestRunner.class)
 @Config("ExampleTestData.properties")
 @Driver(FirefoxDriver.class)
-public class ExampleTest {
+public class ExampleTest
+{
     WebDriver driver;
     WebdriverHelper helper;
 
@@ -26,11 +27,13 @@ public class ExampleTest {
     String baseUrl;
 
     @Before
-    public void setUp() {
+    public void setUp()
+    {
     }
 
     @Test
-    public void googleSearchTest() throws Exception {
+    public void googleSearchTest() throws Exception
+    {
         helper.navigateTo(baseUrl);
         WebElement searchInput = helper.getWebElementSingle(By.name("q"));
 
@@ -43,14 +46,16 @@ public class ExampleTest {
 
     @Test
     @Config("SecondExampleTestData.properties")
-    public void testOtherThing() throws Exception {
+    public void testOtherThing() throws Exception
+    {
         Thread.sleep(100);
         assertTrue(true);
     }
 
     @Test
     @Driver(ChromeDriver.class)
-    public void testSecondThing() throws Exception {
+    public void testSecondThing() throws Exception
+    {
         helper.pause();
         assertFalse(!true);
     }

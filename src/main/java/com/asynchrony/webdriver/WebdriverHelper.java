@@ -1,6 +1,5 @@
 package com.asynchrony.webdriver;
 
-import com.asynchrony.webdriver.annotations.InjectProperty;
 import com.asynchrony.webdriver.rules.DriverSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -17,31 +16,33 @@ import static org.junit.Assert.assertTrue;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfAllElementsLocatedBy;
 import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElementLocated;
 
-public class WebdriverHelper {
-    private DriverSource driverSource;
-
+public class WebdriverHelper
+{
     //@InjectProperty("defaultTimeout")
-    // this line doesn't work and I don't know why
+    // the above line doesn't inject the property
     int defaultTimeout = 3000;
-
     //@InjectProperty("defaultSleep")
     // the above line doesn't inject the property
-    // same problem in WebdriverHelper for default timeout
     int defaultSleep = 1000;
+    private DriverSource driverSource;
 
-    public WebdriverHelper(DriverSource driverSource) {
+    public WebdriverHelper(DriverSource driverSource)
+    {
         this.driverSource = driverSource;
     }
 
-    public void navigateTo(String url) {
+    public void navigateTo(String url)
+    {
         driverSource.getDriver().navigate().to(url);
     }
 
-    public void assertTitleContains(String value) {
+    public void assertTitleContains(String value)
+    {
         assertTrue(driverSource.getDriver().getTitle().contains(value));
     }
 
-    public void takeScreenshot(DriverSource driverSource, String path) {
+    public void takeScreenshot(DriverSource driverSource, String path)
+    {
         path = path + System.getProperty("file.separator") + "screenshot.png";
         try {
             File screenshot = ((TakesScreenshot) driverSource.getDriver()).getScreenshotAs(OutputType.FILE);
@@ -52,28 +53,29 @@ public class WebdriverHelper {
         }
     }
 
-    public String randomString(int stringLength) {
+    public String randomString(int stringLength)
+    {
         return RandomStringUtils.random(stringLength);
     }
 
-    public void clickWait(WebElement element) {
+    public void clickWait(WebElement element)
+    {
         element.click();
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        pause();
     }
 
-    public String getElementValue(WebElement element) {
+    public String getElementValue(WebElement element)
+    {
         return element.getAttribute("value");
     }
 
-    public String getElementCssClass(WebElement element) {
+    public String getElementCssClass(WebElement element)
+    {
         return element.getAttribute("class");
     }
 
-    public WebElement getWebElementSingle(By selector) {
+    public WebElement getWebElementSingle(By selector)
+    {
         try {
             return waitUntilFound(driverSource, selector);
         } catch (WebDriverException ex) {
@@ -82,7 +84,8 @@ public class WebdriverHelper {
         return null;
     }
 
-    public List<WebElement> getWebElementList(By selector) {
+    public List<WebElement> getWebElementList(By selector)
+    {
         try {
             return waitUntilListFound(driverSource, selector);
         } catch (WebDriverException ex) {
@@ -91,13 +94,15 @@ public class WebdriverHelper {
         return null;
     }
 
-    private WebElement waitUntilFound(DriverSource driverSource, By locator) {
+    private WebElement waitUntilFound(DriverSource driverSource, By locator)
+    {
         WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), defaultTimeout);
         //waiter.ignoring(NoSuchElementException.class);
         return waiter.until(presenceOfElementLocated(locator));
     }
 
-    private List<WebElement> waitUntilListFound(DriverSource driverSource, By locator) {
+    private List<WebElement> waitUntilListFound(DriverSource driverSource, By locator)
+    {
         WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), defaultTimeout);
         //waiter.ignoring(NoSuchElementException.class);
         return waiter.until(presenceOfAllElementsLocatedBy(locator));

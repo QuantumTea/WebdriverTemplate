@@ -11,14 +11,17 @@ import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.util.Properties;
 
-public class InjectConfigRule implements MethodRule {
+public class InjectConfigRule implements MethodRule
+{
     @Override
-    public Statement apply(Statement base, FrameworkMethod method, Object target) {
+    public Statement apply(Statement base, FrameworkMethod method, Object target)
+    {
         injectConfig(method, target);
         return base;
     }
 
-    private void injectConfig(FrameworkMethod method, Object target) {
+    private void injectConfig(FrameworkMethod method, Object target)
+    {
         Class<?> klass = target.getClass();
         String configPath = getConfigPath(klass, method);
         if (configPath == null) {
@@ -34,7 +37,7 @@ public class InjectConfigRule implements MethodRule {
         try {
             config.load(inputStream);
             Log.setLogFilePath(config.getProperty("logfilepath", "c:\\Logs"));
-            Log.setLogFileName(config.getProperty("logfilename", target.getClass().getName()+".txt"));
+            Log.setLogFileName(config.getProperty("logfilename", target.getClass().getName() + ".txt"));
 
             Field[] fields = klass.getDeclaredFields();
             for (Field field : fields) {
@@ -57,7 +60,8 @@ public class InjectConfigRule implements MethodRule {
         }
     }
 
-    private String getConfigPath(Class<?> klass, FrameworkMethod method) {
+    private String getConfigPath(Class<?> klass, FrameworkMethod method)
+    {
         return new AnnotationValueExtractor<Config, String>(Config.class).value(klass, method);
     }
 }

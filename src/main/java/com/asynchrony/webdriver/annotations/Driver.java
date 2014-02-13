@@ -9,6 +9,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Driver {
+public @interface Driver
+{
     Class<? extends WebDriver> value();
 }
