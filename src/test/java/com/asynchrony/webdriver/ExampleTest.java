@@ -11,6 +11,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.ie.InternetExplorerDriver;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -50,6 +51,7 @@ public class ExampleTest
 
     @Test
     @Config("SecondExampleTestData.properties")
+    @Driver(InternetExplorerDriver.class)
     public void testOtherThing() throws Exception
     {
         helper.navigateTo(baseUrl);
