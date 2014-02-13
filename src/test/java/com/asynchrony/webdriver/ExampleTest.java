@@ -22,6 +22,8 @@ public class ExampleTest {
 
     @InjectProperty("baseURL")
     String baseUrl;
+    @InjectProperty("defaultTimeout")
+    int defaultTimeout;
 
     @Before
     public void setUp() {
@@ -31,6 +33,7 @@ public class ExampleTest {
     public void testFirstThing() throws Exception {
         helper.navigateTo(baseUrl);
         helper.assertTitleContains("Google");
+        Log.info("Default timeout is: " + defaultTimeout);
     }
 
     @Test
