@@ -24,6 +24,11 @@ public class WebdriverHelper {
     // this line doesn't work and I don't know why
     int defaultTimeout = 3000;
 
+    //@InjectProperty("defaultSleep")
+    // the above line doesn't inject the property
+    // same problem in WebdriverHelper for default timeout
+    int defaultSleep = 1000;
+
     public WebdriverHelper(DriverSource driverSource) {
         this.driverSource = driverSource;
     }
@@ -113,5 +118,14 @@ public class WebdriverHelper {
                 .release(target)
                 .build();
         dragAndDrop.perform();
+    }
+
+    public void pause()
+    {
+        try {
+            Thread.sleep(defaultSleep);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

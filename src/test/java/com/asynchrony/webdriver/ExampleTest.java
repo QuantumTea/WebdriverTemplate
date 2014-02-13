@@ -36,7 +36,7 @@ public class ExampleTest {
 
         searchInput.sendKeys("cheese");
         searchInput.submit();
-        Thread.sleep(1000);
+        helper.pause();
 
         helper.assertTitleContains("cheese");
     }
@@ -51,7 +51,7 @@ public class ExampleTest {
     @Test
     @Driver(ChromeDriver.class)
     public void testSecondThing() throws Exception {
-        Thread.sleep(1500);
+        helper.pause();
         assertFalse(!true);
     }
 }
