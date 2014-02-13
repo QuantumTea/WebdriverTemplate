@@ -1,5 +1,6 @@
 package com.asynchrony.webdriver;
 
+import com.asynchrony.webdriver.annotations.InjectProperty;
 import com.asynchrony.webdriver.rules.DriverSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -18,6 +19,10 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 
 public class WebdriverHelper {
     private DriverSource driverSource;
+
+    //@InjectProperty("defaultTimeout")
+    // this line doesn't work and I don't know why
+    int defaultTimeout = 3000;
 
     public WebdriverHelper(DriverSource driverSource) {
         this.driverSource = driverSource;
@@ -63,49 +68,44 @@ public class WebdriverHelper {
         return element.getAttribute("class");
     }
 
-    public WebElement getWebElementSingleBy(DriverSource driverSource, By selector) {
-        // add config for the wait timeout, reference it here
-        int timeoutOnWait = 3000;
+    public WebElement getWebElementSingle(By selector) {
         try {
-            return waitUntilFound(driverSource, selector, timeoutOnWait);
+            return waitUntilFound(driverSource, selector);
         } catch (WebDriverException ex) {
             Log.error("Timeout on single: " + selector);
         }
         return null;
     }
 
-    public List<WebElement> getWebElementListBy(DriverSource driverSource, By selector) {
-        // add config for the wait timeout, reference it here
-        int timeoutOnWait = 3000;
-
+    public List<WebElement> getWebElementList(By selector) {
         try {
-            return waitUntilListFound(driverSource, selector, timeoutOnWait);
+            return waitUntilListFound(driverSource, selector);
         } catch (WebDriverException ex) {
             Log.error("Timeout on single: " + selector);
         }
         return null;
     }
 
-    public WebElement waitUntilFound(DriverSource driverSource, By locator, int timeout) {
-        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), timeout);
-        waiter.ignoring(NoSuchElementException.class);
+    private WebElement waitUntilFound(DriverSource driverSource, By locator) {
+        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), defaultTimeout);
+        //waiter.ignoring(NoSuchElementException.class);
         return waiter.until(presenceOfElementLocated(locator));
     }
 
-    public List<WebElement> waitUntilListFound(DriverSource driverSource, By locator, int timeout) {
-        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), timeout);
-        waiter.ignoring(NoSuchElementException.class);
+    private List<WebElement> waitUntilListFound(DriverSource driverSource, By locator) {
+        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), defaultTimeout);
+        //waiter.ignoring(NoSuchElementException.class);
         return waiter.until(presenceOfAllElementsLocatedBy(locator));
     }
 
-    public void hoverOverWebElement(DriverSource driverSource, WebElement target)
+    public void hoverOverWebElement(WebElement target)
     {
         Actions performHover = new Actions(driverSource.getDriver());
         Action hoverMouse = performHover.moveToElement(target).build();
         hoverMouse.perform();
     }
 
-    public void dragElementToOtherElement(DriverSource driverSource, WebElement source, WebElement target)
+    public void dragElementToOtherElement(WebElement source, WebElement target)
     {
         Actions performDragAndDrop = new Actions(driverSource.getDriver());
         Action dragAndDrop = performDragAndDrop.clickAndHold(source)

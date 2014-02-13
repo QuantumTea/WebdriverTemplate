@@ -6,7 +6,9 @@ import com.asynchrony.webdriver.annotations.InjectProperty;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
@@ -22,18 +24,21 @@ public class ExampleTest {
 
     @InjectProperty("baseURL")
     String baseUrl;
-    @InjectProperty("defaultTimeout")
-    int defaultTimeout;
 
     @Before
     public void setUp() {
     }
 
     @Test
-    public void testFirstThing() throws Exception {
+    public void googleSearchTest() throws Exception {
         helper.navigateTo(baseUrl);
-        helper.assertTitleContains("Google");
-        Log.info("Default timeout is: " + defaultTimeout);
+        WebElement searchInput = helper.getWebElementSingle(By.name("q"));
+
+        searchInput.sendKeys("cheese");
+        searchInput.submit();
+        Thread.sleep(1000);
+
+        helper.assertTitleContains("cheese");
     }
 
     @Test
