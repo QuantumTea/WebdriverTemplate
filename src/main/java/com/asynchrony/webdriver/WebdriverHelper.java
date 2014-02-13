@@ -4,6 +4,8 @@ import com.asynchrony.webdriver.rules.DriverSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.*;
+import org.openqa.selenium.interactions.Action;
+import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
@@ -94,5 +96,22 @@ public class WebdriverHelper {
         WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), timeout);
         waiter.ignoring(NoSuchElementException.class);
         return waiter.until(presenceOfAllElementsLocatedBy(locator));
+    }
+
+    public void hoverOverWebElement(DriverSource driverSource, WebElement target)
+    {
+        Actions performHover = new Actions(driverSource.getDriver());
+        Action hoverMouse = performHover.moveToElement(target).build();
+        hoverMouse.perform();
+    }
+
+    public void dragElementToOtherElement(DriverSource driverSource, WebElement source, WebElement target)
+    {
+        Actions performDragAndDrop = new Actions(driverSource.getDriver());
+        Action dragAndDrop = performDragAndDrop.clickAndHold(source)
+                .moveToElement(target)
+                .release(target)
+                .build();
+        dragAndDrop.perform();
     }
 }
