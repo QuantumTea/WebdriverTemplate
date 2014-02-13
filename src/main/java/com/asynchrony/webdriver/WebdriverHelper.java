@@ -18,15 +18,8 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 
 public class WebdriverHelper
 {
-    //@InjectProperty("defaultTimeout")
-    // the above line doesn't inject the property
-    int defaultTimeout = 3000;
-
-    //@InjectProperty("defaultSleep")
-    // the above line doesn't inject the property
-    int defaultSleep = 1000;
-
     private DriverSource driverSource;
+    private int defaultTimeout = 3000;
 
     public WebdriverHelper(DriverSource driverSource)
     {
@@ -67,10 +60,10 @@ public class WebdriverHelper
         return RandomStringUtils.random(stringLength);
     }
 
-    public void clickWait(WebElement element)
+    public void clickWait(WebElement element, int wait)
     {
         element.click();
-        pause();
+        pause(wait);
     }
 
     public String getElementValue(WebElement element)
@@ -134,10 +127,10 @@ public class WebdriverHelper
         dragAndDrop.perform();
     }
 
-    public void pause()
+    public void pause(int snoozeLength)
     {
         try {
-            Thread.sleep(defaultSleep);
+            Thread.sleep(snoozeLength);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

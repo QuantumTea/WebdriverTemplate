@@ -26,6 +26,10 @@ public class ExampleTest
     @InjectProperty("baseURL")
     String baseUrl;
 
+    @InjectProperty("defaultSleep")
+    int defaultSleep;
+    // the above line doesn't inject the property
+
     @Before
     public void setUp()
     {
@@ -39,7 +43,7 @@ public class ExampleTest
 
         searchInput.sendKeys("cheese");
         searchInput.submit();
-        helper.pause();
+        helper.pause(defaultSleep);
 
         helper.assertTitleContains("cheese");
     }
@@ -48,7 +52,7 @@ public class ExampleTest
     @Config("SecondExampleTestData.properties")
     public void testOtherThing() throws Exception
     {
-        Thread.sleep(100);
+        helper.navigateTo(baseUrl);
         assertTrue(true);
     }
 
@@ -56,7 +60,9 @@ public class ExampleTest
     @Driver(ChromeDriver.class)
     public void testSecondThing() throws Exception
     {
-        helper.pause();
-        assertFalse(!true);
+        helper.navigateTo(baseUrl);
+        helper.pause(defaultSleep);
+        System.out.println("Sleep: " + defaultSleep);
+        assertFalse(false);
     }
 }
