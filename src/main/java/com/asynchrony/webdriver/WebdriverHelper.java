@@ -21,9 +21,11 @@ public class WebdriverHelper
     //@InjectProperty("defaultTimeout")
     // the above line doesn't inject the property
     int defaultTimeout = 3000;
+
     //@InjectProperty("defaultSleep")
     // the above line doesn't inject the property
     int defaultSleep = 1000;
+
     private DriverSource driverSource;
 
     public WebdriverHelper(DriverSource driverSource)
@@ -38,7 +40,14 @@ public class WebdriverHelper
 
     public void assertTitleContains(String value)
     {
-        assertTrue(driverSource.getDriver().getTitle().contains(value));
+        assertTrue(driverSource.getDriver().getTitle().toLowerCase()
+                .contains(value.toLowerCase()));
+    }
+
+    public void assertElementTextContains(WebElement element, String value)
+    {
+        assertTrue(element.getText().toLowerCase()
+                .contains(value.toLowerCase()));
     }
 
     public void takeScreenshot(DriverSource driverSource, String path)
