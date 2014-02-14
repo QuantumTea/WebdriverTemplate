@@ -19,7 +19,8 @@ import static org.openqa.selenium.support.ui.ExpectedConditions.presenceOfElemen
 public class WebdriverHelper
 {
     private DriverSource driverSource;
-    private int defaultTimeout = 3000;
+    private int defaultPause = 1000;
+    private int defaultWaitWhileSearching = 3000;
 
     public WebdriverHelper(DriverSource driverSource)
     {
@@ -60,10 +61,10 @@ public class WebdriverHelper
         return RandomStringUtils.random(stringLength);
     }
 
-    public void clickWait(WebElement element, int wait)
+    public void clickAndWait(WebElement element)
     {
         element.click();
-        pause(wait);
+        pause(defaultPause);
     }
 
     public String getElementValue(WebElement element)
@@ -98,14 +99,14 @@ public class WebdriverHelper
 
     private WebElement waitUntilFound(DriverSource driverSource, By locator)
     {
-        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), defaultTimeout);
+        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), defaultWaitWhileSearching);
         //waiter.ignoring(NoSuchElementException.class);
         return waiter.until(presenceOfElementLocated(locator));
     }
 
     private List<WebElement> waitUntilListFound(DriverSource driverSource, By locator)
     {
-        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), defaultTimeout);
+        WebDriverWait waiter = new WebDriverWait(driverSource.getDriver(), defaultWaitWhileSearching);
         //waiter.ignoring(NoSuchElementException.class);
         return waiter.until(presenceOfAllElementsLocatedBy(locator));
     }
@@ -119,6 +120,7 @@ public class WebdriverHelper
 
     public void dragElementToOtherElement(WebElement source, WebElement target)
     {
+        // drag and drop is flaky, caveat emptor
         Actions performDragAndDrop = new Actions(driverSource.getDriver());
         Action dragAndDrop = performDragAndDrop.clickAndHold(source)
                 .moveToElement(target)
@@ -129,6 +131,8 @@ public class WebdriverHelper
 
     public void pause(int snoozeLength)
     {
+        if (snoozeLength == 0) snoozeLength = defaultPause;
+
         try {
             Thread.sleep(snoozeLength);
         } catch (InterruptedException e) {
@@ -145,6 +149,6 @@ public class WebdriverHelper
         passwordInput.sendKeys(password);
 
         WebElement submitLogin = getWebElementSingle(By.id("wp-submit"));
-        clickWait(submitLogin, defaultTimeout);
+        clickAndWait(submitLogin);
     }
 }
