@@ -29,6 +29,7 @@ public class ExampleTest
 
     @InjectProperty("defaultSleep")
     String defaultSleepStringValue;
+
     int defaultSleep;
 
     @Before

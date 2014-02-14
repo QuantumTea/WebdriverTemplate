@@ -152,7 +152,7 @@ public class WebdriverHelper
         WebElement passwordInput = getWebElementSingle(By.id("user_pass"));
         passwordInput.sendKeys(password);
 
-        WebElement submitLogin = getWebElementSingle(By.id("wp-submit"));
-        clickAndWait(submitLogin);
+        pause(defaultPause);
+        passwordInput.submit();
     }
 }
