@@ -135,4 +135,16 @@ public class WebdriverHelper
             e.printStackTrace();
         }
     }
+
+    public void wordPressLogin(String username, String password)
+    {
+        WebElement usernameInput = getWebElementSingle(By.id("user_login"));
+        usernameInput.sendKeys(username);
+
+        WebElement passwordInput = getWebElementSingle(By.id("user_pass"));
+        passwordInput.sendKeys(password);
+
+        WebElement submitLogin = getWebElementSingle(By.id("wp-submit"));
+        clickWait(submitLogin, defaultTimeout);
+    }
 }
