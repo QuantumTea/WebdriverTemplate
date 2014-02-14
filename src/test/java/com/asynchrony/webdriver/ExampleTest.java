@@ -28,12 +28,13 @@ public class ExampleTest
     String baseUrl;
 
     @InjectProperty("defaultSleep")
+    String defaultSleepStringValue;
     int defaultSleep;
-    // the above line doesn't inject the property
 
     @Before
     public void setUp()
     {
+        defaultSleep = Integer.parseInt(defaultSleepStringValue);
     }
 
     @Test
@@ -56,7 +57,6 @@ public class ExampleTest
     public void testOtherThing() throws Exception
     {
         helper.navigateTo(baseUrl);
-        System.out.println("Sleep: " + defaultSleep);
         assertTrue(true);
     }
 
@@ -65,8 +65,6 @@ public class ExampleTest
     public void testSecondThing() throws Exception
     {
         helper.navigateTo(baseUrl);
-        helper.pause(defaultSleep);
-        System.out.println("Sleep: " + defaultSleep);
         assertFalse(false);
     }
 }
