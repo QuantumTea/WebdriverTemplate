@@ -1,7 +1,7 @@
 package com.asynchrony.webdriver;
 
 import com.asynchrony.webdriver.rules.DriverSource;
-import com.asynchrony.webdriver.testdata.wordPressLoginPage;
+import com.asynchrony.webdriver.testdata.WordPressLoginPage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.*;
@@ -48,10 +48,12 @@ public class WebdriverHelper
     public void takeScreenshot(DriverSource driverSource, String path)
     {
         String screenshotPath = path + System.getProperty("file.separator") + "screenshot.png";
-        try {
+        try
+        {
             File screenshot = ((TakesScreenshot) driverSource.getDriver()).getScreenshotAs(OutputType.FILE);
             FileUtils.copyFile(screenshot, new File(screenshotPath));
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             e.printStackTrace();
             Log.info("Screenshot failed \n" + e.toString());
             Log.info("Attempted path was: " + screenshotPath);
@@ -86,9 +88,11 @@ public class WebdriverHelper
 
     public WebElement getWebElementSingle(By selector)
     {
-        try {
+        try
+        {
             return waitUntilFound(driverSource, selector);
-        } catch (WebDriverException ex) {
+        } catch (WebDriverException ex)
+        {
             Log.error("Timeout on single: " + selector);
         }
         return null;
@@ -96,9 +100,11 @@ public class WebdriverHelper
 
     public List<WebElement> getWebElementList(By selector)
     {
-        try {
+        try
+        {
             return waitUntilListFound(driverSource, selector);
-        } catch (WebDriverException ex) {
+        } catch (WebDriverException ex)
+        {
             Log.error("Timeout on single: " + selector);
         }
         return null;
@@ -138,19 +144,21 @@ public class WebdriverHelper
         if (snoozeLength == 0)
             snoozeLength = defaultPause;
 
-        try {
+        try
+        {
             Thread.sleep(snoozeLength);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }
 
     public void wordPressLogin(String username, String password)
     {
-        WebElement usernameInput = getWebElementSingle(By.id(wordPressLoginPage.idUserNameField));
+        WebElement usernameInput = getWebElementSingle(By.id(WordPressLoginPage.idUserNameField));
         usernameInput.sendKeys(username);
 
-        WebElement passwordInput = getWebElementSingle(By.id(wordPressLoginPage.idPasswordField));
+        WebElement passwordInput = getWebElementSingle(By.id(WordPressLoginPage.idPasswordField));
         passwordInput.sendKeys(password);
 
         pause(defaultPause);

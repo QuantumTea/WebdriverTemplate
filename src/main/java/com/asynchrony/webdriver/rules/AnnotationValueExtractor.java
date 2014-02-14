@@ -18,14 +18,17 @@ public class AnnotationValueExtractor<A extends Annotation, V>
     {
         A klassAnnotation = klass.getAnnotation(annotationClass);
         A methodAnnotation = method.getAnnotation(annotationClass);
-        if (klassAnnotation == null && methodAnnotation == null) {
+        if (klassAnnotation == null && methodAnnotation == null)
+        {
             return null;
         }
 
         A annotation = methodAnnotation != null ? methodAnnotation : klassAnnotation;
-        try {
+        try
+        {
             return (V) annotationClass.getMethod("value", new Class[0]).invoke(annotation, new Class[0]);
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             return null;
         }
     }

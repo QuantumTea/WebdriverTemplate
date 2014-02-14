@@ -24,10 +24,12 @@ public class InjectWebdriverRule implements MethodRule, DriverSource
             @Override
             public void evaluate() throws Throwable
             {
-                try {
+                try
+                {
                     injectWebdriver(method, target);
                     base.evaluate();
-                } finally {
+                } finally
+                {
                     shutdownDriver();
                 }
             }
@@ -41,7 +43,8 @@ public class InjectWebdriverRule implements MethodRule, DriverSource
 
     private void shutdownDriver()
     {
-        if (driver != null) {
+        if (driver != null)
+        {
             driver.quit();
             driver = null;
         }
@@ -52,7 +55,8 @@ public class InjectWebdriverRule implements MethodRule, DriverSource
         Class<?> klass = target.getClass();
         Class<? extends WebDriver> driverClass = getDriver(klass, method);
 
-        try {
+        try
+        {
             driver = new EventFiringWebDriver(driverClass.newInstance()).register(new AbstractWebDriverEventListener()
             {
                 @Override
@@ -81,13 +85,16 @@ public class InjectWebdriverRule implements MethodRule, DriverSource
             });
 
             Field[] fields = klass.getDeclaredFields();
-            for (Field field : fields) {
-                if (field.getType().isAssignableFrom(driverClass)) {
+            for (Field field : fields)
+            {
+                if (field.getType().isAssignableFrom(driverClass))
+                {
                     field.setAccessible(true);
                     field.set(target, driver);
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             shutdownDriver();
         }
     }

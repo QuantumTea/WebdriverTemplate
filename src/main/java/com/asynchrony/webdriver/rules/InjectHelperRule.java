@@ -19,12 +19,16 @@ public class InjectHelperRule implements MethodRule
     @Override
     public Statement apply(Statement base, FrameworkMethod method, Object target)
     {
-        for (Field field : target.getClass().getDeclaredFields()) {
-            if (field.getType().isAssignableFrom(WebdriverHelper.class)) {
-                try {
+        for (Field field : target.getClass().getDeclaredFields())
+        {
+            if (field.getType().isAssignableFrom(WebdriverHelper.class))
+            {
+                try
+                {
                     field.setAccessible(true);
                     field.set(target, new WebdriverHelper(driver));
-                } catch (IllegalAccessException ignored) {
+                } catch (IllegalAccessException ignored)
+                {
                 }
             }
         }

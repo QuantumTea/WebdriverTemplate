@@ -24,38 +24,47 @@ public class InjectConfigRule implements MethodRule
     {
         Class<?> klass = target.getClass();
         String configPath = getConfigPath(klass, method);
-        if (configPath == null) {
+        if (configPath == null)
+        {
             return;
         }
 
         InputStream inputStream = klass.getResourceAsStream(configPath);
-        if (inputStream == null) {
+        if (inputStream == null)
+        {
             return;
         }
 
         Properties config = new Properties();
-        try {
+        try
+        {
             config.load(inputStream);
             Log.setLogFilePath(config.getProperty("logfilepath", "c:\\Logs"));
             Log.setLogFileName(config.getProperty("logfilename", target.getClass().getName() + ".txt"));
 
             Field[] fields = klass.getDeclaredFields();
-            for (Field field : fields) {
+            for (Field field : fields)
+            {
                 InjectProperty injection = field.getAnnotation(InjectProperty.class);
-                if (injection != null) {
+                if (injection != null)
+                {
                     String propertyValue = config.getProperty(injection.value());
                     Class<?> fieldType = field.getType();
-                    try {
-                        if (fieldType.isAssignableFrom(String.class)) {
+                    try
+                    {
+                        if (fieldType.isAssignableFrom(String.class))
+                        {
                             field.setAccessible(true);
                             field.set(target, propertyValue);
                         }
-                    } catch (Exception ignored) {
+                    } catch (Exception ignored)
+                    {
                         ignored.printStackTrace();
                     }
                 }
             }
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             System.out.println("### Config failed to load: " + e.getMessage());
         }
     }

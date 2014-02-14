@@ -39,9 +39,11 @@ public class WebdriverTestRunner extends BlockJUnit4ClassRunner
             @Override
             public void evaluate() throws Throwable
             {
-                try {
+                try
+                {
                     statement.evaluate();
-                } finally {
+                } finally
+                {
                     Log.writeFinalLog();
                 }
             }

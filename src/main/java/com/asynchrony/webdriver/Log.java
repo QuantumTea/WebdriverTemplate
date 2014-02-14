@@ -47,14 +47,16 @@ public class Log
     {
         String path = logFilePath + System.getProperty("file.separator") + logFileName;
 
-        try {
+        try
+        {
             File logFile = new File(path);
             FileWriter fw = new FileWriter(logFile, logFile.exists());
             PrintWriter out = new PrintWriter(fw);
             out.println(output);
             out.flush();
             out.close();
-        } catch (IOException e) {
+        } catch (IOException e)
+        {
             System.out.println("\nIOException, log file not written");
             System.out.println("Path was: " + path);
             System.out.println(output);

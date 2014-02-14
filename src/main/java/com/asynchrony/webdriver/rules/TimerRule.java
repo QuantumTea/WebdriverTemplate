@@ -16,9 +16,11 @@ public class TimerRule implements MethodRule
             public void evaluate() throws Throwable
             {
                 long startTime = System.currentTimeMillis();
-                try {
+                try
+                {
                     base.evaluate();
-                } finally {
+                } finally
+                {
                     double elapsed = (System.currentTimeMillis() - startTime) / 1000.0;
                     Log.info(method.getName() + " - " + elapsed + " seconds.");
                 }
