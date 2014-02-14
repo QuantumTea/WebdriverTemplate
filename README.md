@@ -3,6 +3,11 @@ WebdriverTemplate
 
 Java template project for using Webdriver to test web apps. Uses JUnit, Selenium, and Mockito, also wraps some Apache Commons methods.
 
-Drag and drop is something that needs fiddling with, I've never got it to work under Firefox. `hoverOverWebElement` works fine, as do `getWebElementSingle` and `getWebElementList`.
+Tested and working:
+* `getWebElementSingle`
+* `getWebElementList`
+* `hoverOverWebElement`
+* `wordPressLogin`
+* `pause`
 
-Property injection for `defaultSleep` on the ExampleTest doesn't work.
+Added a `getElementAttribute` method to get a named attribute out of an element, like class, value, text, background-color, etc.
