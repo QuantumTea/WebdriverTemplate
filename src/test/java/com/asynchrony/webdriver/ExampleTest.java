@@ -46,6 +46,7 @@ public class ExampleTest
         searchInput.submit();
         helper.pause(defaultSleep);
 
+        System.out.println("Sleep: " + defaultSleep);
         helper.assertTitleContains("cheese");
     }
 
@@ -55,6 +56,7 @@ public class ExampleTest
     public void testOtherThing() throws Exception
     {
         helper.navigateTo(baseUrl);
+        System.out.println("Sleep: " + defaultSleep);
         assertTrue(true);
     }
 

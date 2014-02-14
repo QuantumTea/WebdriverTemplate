@@ -20,7 +20,7 @@ public class WebdriverHelper
 {
     private DriverSource driverSource;
     private int defaultPause = 1000;
-    private int defaultWaitWhileSearching = 3000;
+    private int defaultWaitWhileSearching = 5000;
 
     public WebdriverHelper(DriverSource driverSource)
     {
@@ -46,13 +46,14 @@ public class WebdriverHelper
 
     public void takeScreenshot(DriverSource driverSource, String path)
     {
-        path = path + System.getProperty("file.separator") + "screenshot.png";
+        String screenshotPath = path + System.getProperty("file.separator") + "screenshot.png";
         try {
             File screenshot = ((TakesScreenshot) driverSource.getDriver()).getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot, new File(path));
+            FileUtils.copyFile(screenshot, new File(screenshotPath));
         } catch (IOException e) {
             e.printStackTrace();
             Log.info("Screenshot failed \n" + e.toString());
+            Log.info("Attempted path was: " + screenshotPath);
         }
     }
 
@@ -69,12 +70,17 @@ public class WebdriverHelper
 
     public String getElementValue(WebElement element)
     {
-        return element.getAttribute("value");
+        return getElementAttribute(element, "value");
     }
 
     public String getElementCssClass(WebElement element)
     {
-        return element.getAttribute("class");
+        return getElementAttribute(element, "class");
+    }
+
+    public String getElementAttribute(WebElement element, String attribute)
+    {
+        return element.getAttribute(attribute);
     }
 
     public WebElement getWebElementSingle(By selector)
@@ -122,16 +128,14 @@ public class WebdriverHelper
     {
         // drag and drop is flaky, caveat emptor
         Actions performDragAndDrop = new Actions(driverSource.getDriver());
-        Action dragAndDrop = performDragAndDrop.clickAndHold(source)
-                .moveToElement(target)
-                .release(target)
-                .build();
+        Action dragAndDrop = performDragAndDrop.dragAndDrop(source, target).build();
         dragAndDrop.perform();
     }
 
     public void pause(int snoozeLength)
     {
-        if (snoozeLength == 0) snoozeLength = defaultPause;
+        if (snoozeLength == 0)
+            snoozeLength = defaultPause;
 
         try {
             Thread.sleep(snoozeLength);
