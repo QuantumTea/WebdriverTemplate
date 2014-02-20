@@ -54,7 +54,7 @@ public class ExampleTest
 
     @Test
     @Config("SecondExampleTestData.properties")
-    @Driver(InternetExplorerDriver.class)
+    // @Driver(InternetExplorerDriver.class)
     public void testOtherThing() throws Exception
     {
         helper.navigateTo(baseUrl);
@@ -62,7 +62,7 @@ public class ExampleTest
     }
 
     @Test
-    @Driver(ChromeDriver.class)
+    // @Driver(ChromeDriver.class)
     public void testSecondThing() throws Exception
     {
         helper.navigateTo(baseUrl);
