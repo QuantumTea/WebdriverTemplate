@@ -20,7 +20,7 @@ public class WordpressLoginRule implements MethodRule {
         return new Statement() {
             @Override
             public void evaluate() throws Throwable {
-                AnnotationValueExtractor<WordpressLogin, String> extractor = new AnnotationValueExtractor<>(WordpressLogin.class);
+                AnnotationValueExtractor<WordpressLogin, String> extractor = new AnnotationValueExtractor<WordpressLogin, String>(WordpressLogin.class);
                 WordpressLogin annotation = extractor.getAnnotation(target.getClass(), frameworkMethod);
                 if (annotation != null) {
                     try {
