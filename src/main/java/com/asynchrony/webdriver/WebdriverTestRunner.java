@@ -11,6 +11,9 @@ import java.util.List;
 
 public class WebdriverTestRunner extends BlockJUnit4ClassRunner
 {
+
+    private InjectWebdriverRule webdriverRule;
+
     public WebdriverTestRunner(Class<?> klass) throws InitializationError
     {
         super(klass);
@@ -21,7 +24,7 @@ public class WebdriverTestRunner extends BlockJUnit4ClassRunner
     {
         List<MethodRule> rules = new ArrayList<MethodRule>();
         rules.addAll(super.rules(test));
-        InjectWebdriverRule webdriverRule = new InjectWebdriverRule();
+        webdriverRule = new InjectWebdriverRule();
 
         rules.add(new TimerRule());
         rules.add(new InjectConfigRule());
@@ -29,6 +32,10 @@ public class WebdriverTestRunner extends BlockJUnit4ClassRunner
         rules.add(webdriverRule);
         rules.add(new InjectHelperRule(webdriverRule));
         return rules;
+    }
+
+    public DriverSource getDriverSource() {
+        return webdriverRule;
     }
 
     @Override

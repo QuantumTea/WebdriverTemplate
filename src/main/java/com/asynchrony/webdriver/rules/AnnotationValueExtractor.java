@@ -16,6 +16,18 @@ public class AnnotationValueExtractor<A extends Annotation, V>
     @SuppressWarnings("unchecked")
     public V value(Class<?> klass, FrameworkMethod method)
     {
+        A annotation = getAnnotation(klass, method);
+        if (annotation == null) return null;
+        try
+        {
+            return (V) annotationClass.getMethod("value", new Class[0]).invoke(annotation, new Class[0]);
+        } catch (Exception e)
+        {
+            return null;
+        }
+    }
+
+    public A getAnnotation(Class<?> klass, FrameworkMethod method) {
         A klassAnnotation = klass.getAnnotation(annotationClass);
         A methodAnnotation = method.getAnnotation(annotationClass);
         if (klassAnnotation == null && methodAnnotation == null)
@@ -24,12 +36,6 @@ public class AnnotationValueExtractor<A extends Annotation, V>
         }
 
         A annotation = methodAnnotation != null ? methodAnnotation : klassAnnotation;
-        try
-        {
-            return (V) annotationClass.getMethod("value", new Class[0]).invoke(annotation, new Class[0]);
-        } catch (Exception e)
-        {
-            return null;
-        }
+        return annotation;
     }
 }
