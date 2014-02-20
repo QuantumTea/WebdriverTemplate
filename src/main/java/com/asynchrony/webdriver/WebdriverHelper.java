@@ -28,6 +28,10 @@ public class WebdriverHelper
         this.driverSource = driverSource;
     }
 
+    public WebDriver getDriver() {
+        return driverSource.getDriver();
+    }
+
     public void navigateTo(String url)
     {
         driverSource.getDriver().navigate().to(url);
