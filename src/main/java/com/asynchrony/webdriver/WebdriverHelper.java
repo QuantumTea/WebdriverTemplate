@@ -1,7 +1,7 @@
 package com.asynchrony.webdriver;
 
 import com.asynchrony.webdriver.rules.DriverSource;
-import com.asynchrony.webdriver.testdata.WordPressLoginPage;
+import com.asynchrony.webdriver.wordpress.WordPressLoginPage;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.openqa.selenium.*;
@@ -155,17 +155,5 @@ public class WebdriverHelper
         {
             e.printStackTrace();
         }
-    }
-
-    public void wordPressLogin(String username, String password)
-    {
-        WebElement usernameInput = getWebElementSingle(By.id(WordPressLoginPage.idUserNameField));
-        usernameInput.sendKeys(username);
-
-        WebElement passwordInput = getWebElementSingle(By.id(WordPressLoginPage.idPasswordField));
-        passwordInput.sendKeys(password);
-
-        pause(defaultPause);
-        passwordInput.submit();
     }
 }

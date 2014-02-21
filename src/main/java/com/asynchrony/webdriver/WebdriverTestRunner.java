@@ -17,6 +17,7 @@ public class WebdriverTestRunner extends BlockJUnit4ClassRunner
     public WebdriverTestRunner(Class<?> klass) throws InitializationError
     {
         super(klass);
+        webdriverRule = new InjectWebdriverRule();
     }
 
     @Override
@@ -24,7 +25,6 @@ public class WebdriverTestRunner extends BlockJUnit4ClassRunner
     {
         List<MethodRule> rules = new ArrayList<MethodRule>();
         rules.addAll(super.rules(test));
-        webdriverRule = new InjectWebdriverRule();
 
         rules.add(new TimerRule());
         rules.add(new InjectConfigRule());

@@ -16,7 +16,7 @@ public class WordpressTestRunner extends WebdriverTestRunner {
     @Override
     protected List<MethodRule> rules(Object test) {
         List<MethodRule> rules = new ArrayList<MethodRule>();
-        rules.add(new WordpressLoginRule());
+        rules.add(new WordpressLoginRule(getDriverSource()));
         rules.addAll(super.rules(test));
         return rules;
     }

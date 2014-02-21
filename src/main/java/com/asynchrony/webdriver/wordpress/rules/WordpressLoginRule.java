@@ -1,12 +1,12 @@
 package com.asynchrony.webdriver.wordpress.rules;
 
 import com.asynchrony.webdriver.rules.AnnotationValueExtractor;
+import com.asynchrony.webdriver.rules.DriverSource;
 import com.asynchrony.webdriver.wordpress.WordpressHelper;
 import com.asynchrony.webdriver.wordpress.annotations.WordpressLogin;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
-import org.openqa.selenium.WebDriver;
 
 import java.lang.reflect.Field;
 
@@ -14,6 +14,12 @@ import java.lang.reflect.Field;
  * Created by dev1 on 2/20/14.
  */
 public class WordpressLoginRule implements MethodRule {
+
+    private DriverSource driverSource;
+
+    public WordpressLoginRule(DriverSource driverSource) {
+        this.driverSource = driverSource;
+    }
 
     @Override
     public Statement apply(final Statement base, final FrameworkMethod frameworkMethod, final Object target) {
@@ -23,38 +29,22 @@ public class WordpressLoginRule implements MethodRule {
                 AnnotationValueExtractor<WordpressLogin, String> extractor = new AnnotationValueExtractor<WordpressLogin, String>(WordpressLogin.class);
                 WordpressLogin annotation = extractor.getAnnotation(target.getClass(), frameworkMethod);
                 if (annotation != null) {
-                    try {
-                        Field baseUrlField = getBaseUrl(target);
-                        if (baseUrlField != null) {
-                            baseUrlField.setAccessible(true);
-                            String baseUrl = (String) baseUrlField.get(target);
-                            WordpressHelper helper = new WordpressHelper(getWebDriver(target), baseUrl);
-                            helper.login(annotation.username(), annotation.password());
+                    String url = annotation.url();
+                    if (url == null || url.trim().length() == 0) {
+                        String urlVariable = annotation.urlVariable();
+                        if (urlVariable != null && urlVariable.trim().length() > 0) {
+                            Field urlVariableField = target.getClass().getDeclaredField(urlVariable);
+                            urlVariableField.setAccessible(true);
+                            url = (String) urlVariableField.get(target);
                         }
-                    } catch (IllegalAccessException ignored) {
+                    }
+                    if (url != null) {
+                        WordpressHelper helper = new WordpressHelper(driverSource.getDriver(), url);
+                        helper.login(annotation.username(), annotation.password());
                     }
                 }
                 base.evaluate();
             }
         };
-    }
-
-    private WebDriver getWebDriver(Object target) throws NoSuchFieldException, IllegalAccessException {
-        Field driver = target.getClass().getDeclaredField("driver");
-        driver.setAccessible(true);
-        return (WebDriver) driver.get(target);
-    }
-
-    private Field getBaseUrl(Object target) {
-        Field baseUrl = null;
-        try {
-            baseUrl = target.getClass().getDeclaredField("baseUrl");
-        } catch (NoSuchFieldException e) {
-            try {
-                baseUrl = target.getClass().getDeclaredField("baseURL");
-            } catch (NoSuchFieldException e1) {
-            }
-        }
-        return baseUrl;
     }
 }

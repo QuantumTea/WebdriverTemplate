@@ -4,24 +4,27 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
+import static com.asynchrony.webdriver.wordpress.WordPressLoginPage.*;
+
 public class WordpressHelper {
     private WebDriver driver;
-    private String baseUrl;
+    private String siteUrl;
 
-    public WordpressHelper(WebDriver webDriver, String baseUrl) {
-        this.baseUrl = baseUrl;
-        driver = webDriver;
+    public WordpressHelper(WebDriver webDriver, String siteUrl) {
+        this.siteUrl = siteUrl;
+        this.driver = webDriver;
     }
 
     public void login(String username, String password) {
-        driver.navigate().to(baseUrl+"/wp-login.php");
-        WebElement usernameInput = driver.findElement(By.id("user_login"));
+        driver.navigate().to(getLoginPageUrl(siteUrl));
+        WebElement usernameInput = driver.findElement(By.id(getUsernameFieldId()));
         usernameInput.sendKeys(username);
 
-        WebElement passwordInput = driver.findElement(By.id("user_pass"));
+        WebElement passwordInput = driver.findElement(By.id(getPasswordFieldId()));
         passwordInput.sendKeys(password);
 
-        WebElement submitButton = driver.findElement(By.id("wp-submit"));
+        WebElement submitButton = driver.findElement(By.id(getSubmitButtonId()));
         submitButton.submit();
     }
+
 }

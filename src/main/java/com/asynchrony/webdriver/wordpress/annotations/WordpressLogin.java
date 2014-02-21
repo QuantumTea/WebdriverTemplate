@@ -11,4 +11,6 @@ public @interface WordpressLogin
 {
     String username();
     String password();
+    String url() default "";
+    String urlVariable() default "";
 }
