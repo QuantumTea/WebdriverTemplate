@@ -6,11 +6,13 @@ import org.openqa.selenium.WebElement;
 
 import static com.asynchrony.webdriver.wordpress.WordPressLoginPage.*;
 
-public class WordpressHelper {
+public class WordPressHelper
+{
     private WebDriver driver;
     private String siteUrl;
 
-    public WordpressHelper(WebDriver webDriver, String siteUrl) {
+    public WordPressHelper(WebDriver webDriver, String siteUrl)
+    {
         this.siteUrl = siteUrl;
         this.driver = webDriver;
     }
