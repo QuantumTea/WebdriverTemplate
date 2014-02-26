@@ -57,32 +57,8 @@ public class InjectWebdriverRule implements MethodRule, DriverSource
 
         try
         {
-            driver = new EventFiringWebDriver(driverClass.newInstance()).register(new AbstractWebDriverEventListener()
-            {
-                @Override
-                public void afterNavigateTo(String url, WebDriver driver)
-                {
-                    Log.info("afterNavigateTo: " + url);
-                }
-
-                @Override
-                public void afterClickOn(WebElement element, WebDriver driver)
-                {
-                    Log.info("afterClickOn: text=" + element.getText() + ", tag=" + element.getTagName());
-                }
-
-                @Override
-                public void onException(Throwable throwable, WebDriver driver)
-                {
-                    Log.info("onException: " + throwable.getClass().getSimpleName() + " - " + throwable.getMessage());
-                }
-
-                @Override
-                public void afterChangeValueOf(WebElement element, WebDriver driver)
-                {
-                    Log.info("afterChangeValueOf: text=" + element.getText() + ", tag=" + element.getTagName());
-                }
-            });
+            WebDriver webDriver = driverClass.newInstance();
+            driver = webDriver;
 
             Field[] fields = klass.getDeclaredFields();
             for (Field field : fields)

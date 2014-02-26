@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 @RunWith(WebdriverTestRunner.class)
 @Config("ExampleTestData.properties")
-@Driver(FirefoxDriver.class)
+@Driver(ChromeDriver.class)
 public class ExampleTest
 {
     WebDriver driver;
