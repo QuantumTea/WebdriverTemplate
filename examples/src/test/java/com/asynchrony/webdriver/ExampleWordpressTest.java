@@ -6,12 +6,13 @@ import com.asynchrony.webdriver.wordpress.annotations.WordpressLogin;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
 import static org.junit.Assert.assertEquals;
 
 @RunWith(WordpressTestRunner.class)
-@Driver(FirefoxDriver.class)
+@Driver(ChromeDriver.class)
 public class ExampleWordpressTest {
     public static final String VAGRANTPRESS_URL = "http://localhost:8080/";
 
